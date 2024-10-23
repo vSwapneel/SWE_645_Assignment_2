@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('GMU_Image.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            padding-right: 0px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"] {
+            background-color: #28a745;
+        }
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+        button[type="reset"] {
+            background-color: #dc3545;
+        }
+        button[type="reset"]:hover {
+            background-color: #c82333;
+        }
+        fieldset {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        legend {
+            font-weight: bold;
+            color: #333;
+        }
+        .checkbox-label {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        @media (max-width: 600px) {
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        .radio{
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .right-link a {
+            text-decoration: none;
+            color: #007BFF;
+            display: flex;
+            justify-content: end;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Survey</h1>
+        <form action="#" method="post">
+            <label>First Name:
+                <input type="text" name="first_name" required>
+            </label>
+            <label>Last Name:
+                <input type="text" name="last_name" required>
+            </label>
+            <label>Street Address:
+                <input type="text" name="street_address" required>
+            </label>
+            <label>City:
+                <input type="text" name="city" required>
+            </label>
+            <label>State:
+                <input type="text" name="state" required>
+            </label>
+            <label>Zip Code:
+                <input type="text" name="zip" required>
+            </label>
+            <label>Phone Number:
+                <input type="tel" name="phone" required>
+            </label>
+            <label>Email:
+                <input type="email" name="email" required>
+            </label>
+            <label>Date of Survey:
+                <input type="date" name="survey_date" required>
+            </label>
+
+            <fieldset>
+                <legend>What did you like most about the campus?</legend>
+                <label class="checkbox-label"><input type="checkbox" name="liked[]" value="students"> Students</label>
+                <label class="checkbox-label"><input type="checkbox" name="liked[]" value="location"> Location</label>
+                <label class="checkbox-label"><input type="checkbox" name="liked[]" value="campus"> Campus</label>
+                <label class="checkbox-label"><input type="checkbox" name="liked[]" value="atmosphere"> Atmosphere</label>
+                <label class="checkbox-label"><input type="checkbox" name="liked[]" value="dorm_rooms"> Dorm Rooms</label>
+                <label class="checkbox-label"><input type="checkbox" name="liked[]" value="sports"> Sports</label>
+            </fieldset>
+
+            <fieldset class="radio">
+                <legend>How did you become interested in the university?</legend>
+                <div>
+                    <label><input type="radio" name="interest_source" value="friends" required> Friends</label>
+                </div>
+                <div>
+                    <label><input type="radio" name="interest_source" value="television"> Television</label>
+                </div>
+                <div>
+                    <label><input type="radio" name="interest_source" value="internet"> Internet</label>
+                </div>
+                <div>
+                    <label><input type="radio" name="interest_source" value="other"> Other</label>
+                </div>
+            </fieldset>
+
+            <label>How likely are you to recommend this school?
+                <select name="recommendation" required>
+                    <option value="very_likely">Very Likely</option>
+                    <option value="likely">Likely</option>
+                    <option value="unlikely">Unlikely</option>
+                </select>
+            </label>
+
+            <label>Raffle (enter 10 comma-separated numbers between 1 and 100):
+                <input type="text" name="raffle" required>
+            </label>
+
+            <label>Additional Comments:
+                <textarea name="comments" rows="4"></textarea>
+            </label>
+
+            <button type="submit">Submit</button>
+            <button type="reset">Cancel</button>
+
+            <div class="right-link">
+                <h3><a href="http://bucket-assignment-1-17-09.s3-website.us-east-2.amazonaws.com/">Go to Swapneel's Home Page</a></h3>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
