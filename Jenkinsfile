@@ -4,7 +4,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('docker-cred') // Docker credentials added to Jenkins and names the set as docker-pass
     }
     stages {
-        stage('Initialize') {
+        stage('Timestamping') {
             steps {
                 script {
                     // Defining a build timestamp variable
@@ -15,7 +15,7 @@ pipeline {
         }
 
 
-        stage('Building the Student Survey Image') {
+        stage('Building a docker image') {
             steps {
                 script {
                     
@@ -28,30 +28,26 @@ pipeline {
                         """
                     }
 
-                    // Building Docker image using the BUILD_TIMESTAMP
                     def imageName = "vswapneel/assignment2:${env.BUILD_TIMESTAMP}"
                     sh "docker build -t ${imageName} ."
 
-                    // Saving image name for later stages
                     env.IMAGE_NAME = imageName
                 }
             }
         }
         
 
-        stage('Pushing Image to DockerHub') {
+        stage('Push Image to DockerHub') {
             steps {
                 script {
-                    // Pushing the Docker image to DockerHub
                     sh "docker push ${env.IMAGE_NAME}"
                 }
             }
         }
 
-        stage('Deploying to Rancher') {
+        stage('Deploy to Rancher') {
             steps {
                 script {
-                    // Deploying the new image to Rancher
                     sh "kubectl set image deployment/deployment-1 container-0=${env.IMAGE_NAME}"
                 }
             }
