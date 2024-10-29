@@ -1,27 +1,58 @@
 pipeline {
     agent any
-    parameters {
-        string(name: 'NAMESPACE', defaultValue: 'default', description: 'Kubernetes Namespace')
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-cred') // Docker credentials added to Jenkins and names the set as docker-pass
     }
     stages {
-        stage('Build Docker Image') {
+        stage('Initialize') {
             steps {
                 script {
-                    // Build the Docker image
-                    docker.build("vswapneel/assignment2:${env.BUILD_ID}")
-                    // Push the image to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        docker.image("vswapneel/assignment2:${env.BUILD_ID}").push()
-                    }
+                    // Defining a build timestamp variable
+                    env.BUILD_TIMESTAMP = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone('UTC'))
+                    echo "Build timestamp: ${env.BUILD_TIMESTAMP}"
                 }
             }
         }
-        stage('Deploy to Kubernetes') {
+
+
+        stage('Building the Student Survey Image') {
             steps {
                 script {
-                    // Apply the deployment and service YAML files
-                    sh 'kubectl apply -f deployment.yaml -n ${params.NAMESPACE} || { echo "Deployment failed"; exit 1; }'
-                    sh 'kubectl apply -f service.yaml -n ${params.NAMESPACE} || { echo "Service creation failed"; exit 1; }'
+                    
+                    // Securely handling Docker login
+                    withCredentials([usernamePassword(credentialsId: 'docker-cred', 
+                                                      usernameVariable: 'DOCKER_USER', 
+                                                      passwordVariable: 'DOCKER_PASS')]) {
+                        sh """
+                            echo "\$DOCKER_PASS" | docker login -u "\$DOCKER_USER" --password-stdin
+                        """
+                    }
+
+                    // Building Docker image using the BUILD_TIMESTAMP
+                    def imageName = "vswapneel/assignment2:${env.BUILD_TIMESTAMP}"
+                    sh "docker build -t ${imageName} ."
+
+                    // Saving image name for later stages
+                    env.IMAGE_NAME = imageName
+                }
+            }
+        }
+        
+
+        stage('Pushing Image to DockerHub') {
+            steps {
+                script {
+                    // Pushing the Docker image to DockerHub
+                    sh "docker push ${env.IMAGE_NAME}"
+                }
+            }
+        }
+
+        stage('Deploying to Rancher') {
+            steps {
+                script {
+                    // Deploying the new image to Rancher
+                    sh "kubectl set image deployment/hw2-deployment container-0=${env.IMAGE_NAME}"
                 }
             }
         }
