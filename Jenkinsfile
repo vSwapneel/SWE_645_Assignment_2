@@ -1,7 +1,9 @@
+// Swapneel, Sanjana, Nohtih
+// This is a Jenkins file, This file includes scripts for image building and uploading to docker hub and then deploying on rancher
 pipeline {
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker-cred') // Docker credentials added to Jenkins and names the set as docker-pass
+        DOCKERHUB_CREDENTIALS = credentials('docker-cred')
     }
     stages {
         stage('Timestamping') {
